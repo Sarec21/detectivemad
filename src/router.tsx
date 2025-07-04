@@ -1,8 +1,7 @@
-/* eslint-disable */
 import { createBrowserRouter } from 'react-router-dom';
-import SplashScreen from './screens/SplashScreen.tsx';
-import MainMenu from './screens/MainMenu.tsx';
-import NotFound from './screens/NotFound.tsx';
+import SplashScreen from './screens/SplashScreen';
+import MainMenu from './screens/MainMenu';
+import NotFound from './screens/NotFound';
 
 export const router = createBrowserRouter([
   {
