@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "slug": "demo",
+    "locale": "en",
+    "requiredRank": "agent",
+    "narrativeProfile": "thriller",
+    "version": "2.1"
+  },
+  "dossier": {
+    "victim": {
+      "name": "John Doe",
+      "age": 34,
+      "causeOfDeath": "Blunt-force trauma"
+    },
+    "contextClues": "The crime took place in a locked study during a stormy night.",
+    "baselineTimeline": [
+      {
+        "id": "tl_0001",
+        "time": "19:45",
+        "description": "Victim last seen alive in the study",
+        "hidden": false
+      }
+    ],
+    "evidenceList": [
+      {
+        "id": "ev_0001",
+        "type": "document",
+        "label": "Autopsy report",
+        "keyPhrases": ["fractured skull", "time of death"]
+      }
+    ]
+  },
+  "suspect": {
+    "name": "Clara Finch",
+    "initialStates": {
+      "tolerance": 60,
+      "paranoia": 1,
+      "suggestibility": 0.4
+    },
+    "pressureReactions": [
+      {
+        "trigger": "family",
+        "locale": "en",
+        "text": "Leave my family out of this!"
+      }
+    ],
+    "pauseCount": 0
+  },
+  "timeline": {
+    "events": []
+  },
+  "truth": "Clara struck John in self-defence during a heated argument."
+}
