@@ -10,7 +10,7 @@
     "lint": "eslint --ext .ts,.tsx src",
     "format": "prettier --write .",
     "test": "jest",
-    "validate:case": "ts-node tools/validateCase.ts",
+    "validate:case": "node tools/validateCase.js",
     "generate:case": "ts-node tools/generateCaseFromPrompt.ts"
   },
   "dependencies": {
@@ -29,6 +29,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.5.2",
     "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^10.1.5",

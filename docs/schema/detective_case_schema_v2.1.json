@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://detective-game.dev/schemas/case_v2.1.json",
+  "title": "Detective Case – Version 2.1",
+  "description": "Canonical schema for a single-suspect interrogation case file in Detective.",
+  "type": "object",
+  "required": ["meta", "dossier", "suspect", "timeline", "truth"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["slug", "locale", "requiredRank", "narrativeProfile", "version"],
+      "properties": {
+        "slug": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+        "locale": {
+          "type": "string",
+          "description": "ISO-639-1 code",
+          "pattern": "^[a-z]{2}$"
+        },
+        "requiredRank": {
+          "type": "string",
+          "enum": ["agent", "detective", "inspector", "subcommissioner", "commissioner"]
+        },
+        "narrativeProfile": {
+          "type": "string",
+          "enum": ["thriller", "noir", "forensic", "comedy", "political", "psychological"]
+        },
+        "version": { "type": "string", "enum": ["2.1"] },
+        "qaPassed": { "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+    "dossier": {
+      "type": "object",
+      "required": ["victim", "contextClues", "baselineTimeline", "evidenceList"],
+      "properties": {
+        "victim": {
+          "type": "object",
+          "required": ["name", "age", "causeOfDeath"],
+          "properties": {
+            "name": { "type": "string" },
+            "age": { "type": "integer", "minimum": 0 },
+            "causeOfDeath": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "contextClues": { "type": "string" },
+        "baselineTimeline": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "required": ["id", "time", "description"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^tl_[a-zA-Z0-9]{4,}$" },
+              "time": { "type": "string" },
+              "description": { "type": "string" },
+              "hidden": { "type": "boolean", "default": false }
+            },
+            "additionalProperties": false
+          }
+        },
+        "evidenceList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "label"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^ev_[a-zA-Z0-9]{4,}$" },
+              "type": {
+                "type": "string",
+                "enum": ["document", "image", "audio", "video", "object"]
+              },
+              "label": { "type": "string" },
+              "keyPhrases": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "suspect": {
+      "type": "object",
+      "required": ["name", "initialStates", "pressureReactions"],
+      "properties": {
+        "name": { "type": "string" },
+        "initialStates": {
+          "type": "object",
+          "required": ["tolerance", "paranoia", "suggestibility"],
+          "properties": {
+            "tolerance": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "paranoia": { "type": "integer", "minimum": 0, "maximum": 2 },
+            "suggestibility": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        },
+        "pressureReactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["trigger", "locale", "text"],
+            "properties": {
+              "trigger": { "type": "string" },
+              "locale": {
+                "type": "string",
+                "pattern": "^[a-z]{2}$"
+              },
+              "text": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "pauseCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "timeline": {
+      "type": "object",
+      "required": ["events"],
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "time", "description", "hidden"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^tl_[a-zA-Z0-9]{4,}$" },
+              "time": { "type": "string" },
+              "description": { "type": "string" },
+              "hidden": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "truth": { "type": "string" }
+  },
+  "$defs": {
+    "examples": {
+      "exampleCase": {
+        "meta": {
+          "slug": "the-stained-cup",
+          "locale": "en",
+          "requiredRank": "agent",
+          "narrativeProfile": "thriller",
+          "version": "2.1",
+          "qaPassed": false
+        },
+        "dossier": {
+          "victim": {
+            "name": "Dr. Ian Frost",
+            "age": 52,
+            "causeOfDeath": "Blunt trauma"
+          },
+          "contextClues": "A quiet study room…",
+          "baselineTimeline": [
+            {
+              "id": "tl_ab12",
+              "time": "20:00",
+              "description": "Victim seen alive",
+              "hidden": false
+            }
+          ],
+          "evidenceList": [
+            {
+              "id": "ev_cd34",
+              "type": "document",
+              "label": "Autopsy report",
+              "keyPhrases": ["blunt object"]
+            }
+          ]
+        },
+        "suspect": {
+          "name": "Clara Finch",
+          "initialStates": {
+            "tolerance": 70,
+            "paranoia": 1,
+            "suggestibility": 0.5
+          },
+          "pressureReactions": [
+            {
+              "trigger": "family",
+              "locale": "en",
+              "text": "Don't bring my family into this"
+            }
+          ],
+          "pauseCount": 0
+        },
+        "timeline": { "events": [] },
+        "truth": "The suspect acted in self-defense."
+      }
+    }
+  }
+}
